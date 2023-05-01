@@ -1,0 +1,13 @@
+---
+# handlers file for ns01
+- name: start_named
+  service:
+    name: named.service
+    state: started
+    enabled: yes
+
+- name: start_chronyd
+  service:
+    name: chronyd
+    state: started
+    enabled: yes

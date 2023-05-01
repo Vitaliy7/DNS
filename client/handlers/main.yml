@@ -1,0 +1,7 @@
+---
+# handlers file for client
+- name: start_chronyd
+  service:
+    name: chronyd
+    state: started
+    enabled: yes

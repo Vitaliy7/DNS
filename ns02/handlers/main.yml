@@ -1,0 +1,13 @@
+---
+# handlers file for ns02
+- name: start_chronyd
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: restart_named
+  service:
+    name: named
+    state: started
+    enabled: yes

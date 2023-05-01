@@ -1,0 +1,42 @@
+---
+# tasks file for client
+- name: install packages
+  ansible.builtin.yum:
+    name:
+      - bind
+      - bind-utils
+    state: latest
+  notify:
+    - start_chronyd
+
+- name: copy transferkey
+  ansible.builtin.copy:
+    src: named.zonetransfer.key
+    dest: /etc/named.zonetransfer.key
+    owner: root
+    group: named
+    mode: 0644
+
+- name: copy resolv.conf
+  copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy rndc conf file
+  copy:
+    src: rndc.conf
+    dest: /home/vagrant/rndc.conf
+    owner: vagrant
+    group: vagrant
+    mode: 0644
+
+- name: copy motd to the client
+  copy:
+    src: client-motd
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0644

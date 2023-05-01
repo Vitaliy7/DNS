@@ -1,0 +1,43 @@
+---
+# tasks file for ns02
+- name: install packages
+  ansible.builtin.yum:
+    name:
+      - bind
+      - bind-utils
+    state: latest
+  notify: 
+    - start_chronyd
+
+- name: copy named.conf
+  ansible.builtin.copy:
+    src: named.conf
+    dest: /etc/named.conf
+    owner: root
+    group: named
+    mode: 0640
+
+- name: copy resolv.conf
+  copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy transferkey
+  ansible.builtin.copy:
+    src: named.zonetransfer.key
+    dest: /etc/named.zonetransfer.key
+    owner: root
+    group: named
+    mode: 0644
+
+- name: set /etc/named permissions
+  file:
+    path: /etc/named
+    owner: root
+    group: named
+    mode: 0670
+  notify:
+    - restart_named

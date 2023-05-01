@@ -1,0 +1,57 @@
+---
+# tasks file for ns01
+- name: install packages
+  ansible.builtin.yum:
+    name:
+      - bind
+      - bind-utils
+    state: latest
+  
+- name: copy transferkey
+  ansible.builtin.copy:
+    src: named.zonetransfer.key
+    dest: /etc/named.zonetransfer.key
+    owner: root
+    group: named
+    mode: 0644
+
+- name: copy named.conf
+  ansible.builtin.copy:
+    src: named.conf
+    dest: /etc/named.conf
+    owner: root
+    group: named
+    mode: 0640
+
+- name: copy resolv.conf
+  copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy zones
+  ansible.builtin.copy:
+    src: '{{ item }}'
+    dest: /etc/named/
+    owner: root
+    group: named
+    mode: 0660
+  with_items:
+    - 'named.dns.lab'
+    - 'named.ddns.lab'
+    - 'named.dns.lab.client'
+    - 'named.dns.lab.rev'
+    - 'named.newdns.lab'
+
+- name: set /etc/named permissions
+  file:
+    path: /etc/named
+    owner: root
+    group: named
+    mode: 0670
+  notify:
+    - start_named
+    - start_chronyd
+...

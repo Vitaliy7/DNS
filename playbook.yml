@@ -1,0 +1,28 @@
+---
+- name: install & configure ns01
+  hosts: ns01
+  become: yes
+
+  roles:
+  - ns01
+ 
+- name: install & configure ns02
+  hosts: ns02
+  become: yes
+
+  roles:
+  - ns02
+  
+- name: install & configure client
+  hosts: client
+  become: yes
+
+  roles:
+  - client
+  
+- name: install & configure client2
+  hosts: client2
+  become: yes
+
+  roles:
+  - client2
